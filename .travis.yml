@@ -7,8 +7,8 @@ before_install: |
     -v "$(pwd)/config:/etc/gitlab-runner" \
     -d gitlab/gitlab-runner:latest
 install: |
-  sed -i "s/TOKEN/${gitlabtoken}/" config/config.toml
-  sed -i "s/URL/${gitlaburl}/" config/config.toml
+  sed -i "s#TOKEN#${gitlabtoken}#" config/config.toml
+  sed -i "s#URL#${gitlaburl}#" config/config.toml
 script:
 - bash entrypoint.sh
 env:

@@ -14,24 +14,22 @@ function check_gitlab() {
   while true; do
     project_cnt=0
     for id in $(curl -s "$api/projects?page=$page" | jq '.[].id'); do
-      # some kind of output is required otherwise
-      # travis will cancel the job earlier
-      echo -n "."
       api_jobs="$api/projects/$id/jobs?scope=pending"
       pending=$(curl -s --header "$header" "$api_jobs" | jq '.[]')
       if [[ "$pending" != "" ]]; then
-        echo "Found one pending job!"
-        return 1
+        echo 1
+        return
       fi
       project_cnt=$(( $project_cnt + 1 ))
     done
     if [ $project_cnt -eq 0 ]; then
-      echo "Project count zero ($project_cnt)! Skipping.."
-      return 0
+      echo 0
+      return
     fi
     page=$(( $page + 1 ))
   done
-  return 0
+  echo 0
+  return
 }
 
 if [[ "$WORKER" == "true" ]]; then
@@ -65,7 +63,10 @@ else
         -d "{\"request\": {\"branch\":\"${TRAVIS_BRANCH}\",$travis_config}}" \
         https://api.travis-ci.org/repo/${encoded_slug}/requests
     fi
-    sleep 60
+    # some kind of output is required otherwise
+    # travis will cancel the job earlier
+    echo -n "."
+    sleep 30
   done
   # restart agent process
   curl -s -X POST \

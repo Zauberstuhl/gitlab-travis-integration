@@ -4,7 +4,7 @@
 max_duration=$((45 * 60))
 starting_time=$(date +%s)
 ending_time=$(($starting_time + $max_duration))
-travis_config='"config":{"merge_mode":"deep_merge","env":{"WORKER":"true"}}'
+travis_config='"config":{"merge_mode":"deep_merge","env":{"global":{"WORKER":"true"}}}'
 encoded_slug=$(echo $TRAVIS_REPO_SLUG |sed 's/\//%2F/g')
 
 function check_gitlab() {

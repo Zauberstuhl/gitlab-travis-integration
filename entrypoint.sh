@@ -68,7 +68,7 @@ else
     # travis will cancel the job earlier
     echo -n "."
     if [ $result -eq 1 ]; then
-      sleep 600
+      sleep 480
     else
       sleep 10
     fi

@@ -41,12 +41,13 @@ if [[ "$WORKER" == "true" ]]; then
   sed -i "s#TOKEN#${gitlabtoken}#" config/config.toml
   sed -i "s#URL#${gitlaburl}#" config/config.toml
 
-  echo -n "Waiting for succeed"
+  echo -n "Waiting for success"
   while true; do
-    started=$(docker logs gitlab-runner |grep '... received' |wc -l)
-    finished=$(docker logs gitlab-runner |grep 'Job succeeded' |wc -l)
+    started=$(docker logs gitlab-runner 2>&1 |grep 'received' |wc -l)
+    finished=$(docker logs gitlab-runner 2>&1 |grep 'Job succeeded' |wc -l)
     if [ $started -eq $finished ] && [ $started -ne 0 ]; then break; fi
     echo -n "."
+    sleep 60
   done
 else
   echo -n "Waiting for worker"
@@ -66,7 +67,11 @@ else
     # some kind of output is required otherwise
     # travis will cancel the job earlier
     echo -n "."
-    sleep 30
+    if [ $result -eq 1 ]; then
+      sleep 600
+    else
+      sleep 10
+    fi
   done
   # restart agent process
   curl -s -X POST \

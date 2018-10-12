@@ -8,7 +8,7 @@ travis_config='"config":{"script":"bash entrypoint.sh WORKER"}'
 encoded_slug=$(echo $TRAVIS_REPO_SLUG |sed 's/\//%2F/g')
 
 worker=0
-if [[ "$1" == "WORKER"]]; then
+if [[ "$1" == "WORKER" ]]; then
   worker=1
 fi
 

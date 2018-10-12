@@ -4,8 +4,13 @@
 max_duration=$((45 * 60))
 starting_time=$(date +%s)
 ending_time=$(($starting_time + $max_duration))
-travis_config='"config":{"merge_mode":"deep_merge","env":{"global":{"WORKER":"true"}}}'
+travis_config='"config":{"script":"bash entrypoint.sh WORKER"}'
 encoded_slug=$(echo $TRAVIS_REPO_SLUG |sed 's/\//%2F/g')
+
+worker=0
+if [[ "$1" == "WORKER"]]; then
+  worker=1
+fi
 
 function check_gitlab() {
   page=0
@@ -32,7 +37,7 @@ function check_gitlab() {
   return
 }
 
-if [[ "$WORKER" == "true" ]]; then
+if [ $worker -eq 1 ]; then
   docker pull gitlab/gitlab-runner:latest
   docker run --name gitlab-runner --privileged \
     -v "/var/run/docker.sock:/var/run/docker.sock" \

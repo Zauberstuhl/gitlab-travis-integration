@@ -17,7 +17,10 @@ function check_gitlab() {
       api_jobs="$api/projects/$id/jobs?scope=pending"
       pending=$(curl -s --header "$header" "$api_jobs" | jq '.[]')
       if [[ "$pending" != "" ]] && [[ ! -f /tmp/gti.${id}.lock ]]; then
+        # lock this project for the next five minutes
         touch /tmp/gti.${id}.lock
+        { sleep 300 && rm /tmp/gti.${id}.lock }&
+        # return true and start the worker
         echo 1
         return
       fi

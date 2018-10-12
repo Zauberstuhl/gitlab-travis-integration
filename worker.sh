@@ -1,7 +1,5 @@
 #!/bin/bash
 
-project_id=$1
-
 docker pull gitlab/gitlab-runner:latest
 docker run --name gitlab-runner --privileged \
   -v "/var/run/docker.sock:/var/run/docker.sock" \
@@ -19,5 +17,3 @@ while true; do
   echo -n "."
   sleep 30
 done
-
-rm /tmp/gti.${project_id}.lock || true

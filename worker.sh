@@ -1,12 +1,13 @@
 #!/bin/bash
 
+sed -i "s#TOKEN#${gitlabtoken}#" config/config.toml
+sed -i "s#URL#${gitlaburl}#" config/config.toml
+
 docker pull gitlab/gitlab-runner:latest
 docker run --name gitlab-runner --privileged \
   -v "/var/run/docker.sock:/var/run/docker.sock" \
   -v "$(pwd)/config:/etc/gitlab-runner" \
   -d gitlab/gitlab-runner:latest
-sed -i "s#TOKEN#${gitlabtoken}#" config/config.toml
-sed -i "s#URL#${gitlaburl}#" config/config.toml
 
 while true; do
   started=$(docker logs gitlab-runner 2>&1 |grep 'received' |wc -l)

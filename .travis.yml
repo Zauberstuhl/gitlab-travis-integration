@@ -1,6 +1,9 @@
 sudo: required
 services:
 - docker
+branches:
+  only:
+  - master
 script:
 - bash entrypoint.sh
 env:

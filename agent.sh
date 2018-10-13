@@ -17,7 +17,7 @@ function check_gitlab() {
       api_jobs="$api/projects/$id/jobs?scope=pending"
       pending=$(curl -s --header "$header" "$api_jobs" | jq '.[]')
       # remove lock files older then five minutes
-      find /tmp/gti.${id}.lock -mmin +5 -exec rm {} \;
+      find /tmp/gti.${id}.lock -mmin +5 -exec rm {} \; > /dev/null 2>&1
       if [[ "$pending" != "" ]] && [[ ! -f /tmp/gti.${id}.lock ]]; then
         # lock this project for the next five minutes
         touch /tmp/gti.${id}.lock

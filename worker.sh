@@ -15,6 +15,6 @@ while true; do
   if [ $started -eq $finished ] && [ $started -ne 0 ]; then break; fi
   # some kind of output is required otherwise
   # travis will cancel the job earlier
-  echo -n "."
+  echo -n "(started:$started finished:$finished)"
   sleep 30
 done

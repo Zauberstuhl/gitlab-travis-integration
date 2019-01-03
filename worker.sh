@@ -1,17 +1,21 @@
 #!/bin/bash
 
-sed -i "s#TOKEN#${gitlabtoken}#" config/config.toml
-sed -i "s#URL#${gitlaburl}#" config/config.toml
+# install curl dependency
+apt-get update && apt-get install -y curl
 
-docker pull gitlab/gitlab-runner:latest
-docker run --name gitlab-runner --privileged \
-  -v "/var/run/docker.sock:/var/run/docker.sock" \
-  -v "$(pwd)/config:/etc/gitlab-runner" \
-  -d gitlab/gitlab-runner:latest
+# download runner
+curl -Lo /usr/local/bin/gitlab-runner \
+  https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
+chmod +x /usr/local/bin/gitlab-runner
+
+log=$(mktemp)
+gitlab-runner run-single --name travis-ci \
+  -u "$gitlaburl" -t "$gitlabtoken" \
+  --executor shell --shell bash > $log 2>&1 &
 
 while true; do
-  started=$(docker logs gitlab-runner 2>&1 |grep received |wc -l)
-  finished=$(docker logs gitlab-runner 2>&1 |egrep 'Job (failed|succeeded)' |wc -l)
+  started=$(cat $log |grep received |wc -l)
+  finished=$(cat $log |egrep 'Job (failed|succeeded)' |wc -l)
   if [ $started -eq $finished ] && [ $started -ne 0 ]; then break; fi
   # some kind of output is required otherwise
   # travis will cancel the job earlier

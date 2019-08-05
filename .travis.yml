@@ -5,7 +5,7 @@ branches:
   only:
   - master
 script:
-- bash entrypoint.sh
+- bash worker.sh
 env:
   global:
   - secure: STB6dFySZ0KVjx2A5ZTsnFFg/8sD6uvZ8TS+0j+pDRwr4nNXFu7UK8MgXv2CKAziKTxaqRHMd8Bcg9beni5NR8TkFYyNYTIaox6nCmPCoW3V1cfM/SscMEjzMKyZXcXoUeMSjSdxFT7U+VQ8MysS5EZXj5DqMJh+kPkRqpfRquOnvBhnDwB+l0jSB72O7GScDSmmJGNQ5m2Kz/f7wCRBxH7lB+HfgpL0uklXhIsLvbbeZtDR92mnFkdOjlqywP0I82beI/3cvjW4raeiarM5eVg8kOTHEE63J/HYZq+FcoUGW1GUMpL1ZDnTNWAeaaeFOW+Is4EdYC30iCvvaxwJIk35z28RKwQM+XiuBbg9lEgr2D4VuoUn48DJ6B8bzt8Sjsee6s08yybVuDMf0fxSSY4z7S3VhigRYj0X85f+9gTMR0sPAR9a+2iWjOLx6eDcJiXILOvA3ZBcE7k93g7297+Ytm9tMGC8y1Y3XCtrdXhLBitlh1JMKoTGJS0I1f/b1jbS3AK6uVjseyA1CVWbB94WLAE8Egn+bhFi1sx7bfZmEKdYZ1UjrXc4WfvjUSZev1v5r+Bs9sLaYGSKK4+aoJRQJHil1DDSwTa0c8D0pBBASy8jXJwpcbuikTqLshxVsbf+hHLSFO/dfwfOVa1S/beirFZTtz1+6r3LIt+e+Aw=

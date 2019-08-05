@@ -51,7 +51,7 @@ do
   # some kind of output is required otherwise
   # travis will cancel the job earlier
   echo -n "."
-  sleep 1
+  sleep 360
 done
 
 # restart agent process

@@ -9,12 +9,5 @@ docker run --name gitlab-runner --privileged \
   -v "$(pwd)/config:/etc/gitlab-runner" \
   -d gitlab/gitlab-runner:latest
 
-while true; do
-  started=$(docker logs gitlab-runner 2>&1 |grep received |wc -l)
-  finished=$(docker logs gitlab-runner 2>&1 |egrep 'Job (failed|succeeded)' |wc -l)
-  if [ $started -eq $finished ] && [ $started -ne 0 ]; then break; fi
-  # some kind of output is required otherwise
-  # travis will cancel the job earlier
-  echo "(started:$started finished:$finished)"
-  sleep 30
-done
+# https://docs.travis-ci.com/user/customizing-the-build#Build-Timeouts
+sleep $(( 45 * 60 ))

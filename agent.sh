@@ -16,11 +16,10 @@ function check_gitlab() {
     for id in $(curl -s "$api/projects?page=$page" | jq '.[].id'); do
       api_jobs="$api/projects/$id/jobs?scope=pending"
       pending=$(curl -s --header "$header" "$api_jobs" | jq '.[]')
-      # remove lock files older then five minutes
-      find /tmp/gti.${id}.lock -mmin +5 -exec rm {} \; > /dev/null 2>&1
-      if [[ "$pending" != "" ]] && [[ ! -f /tmp/gti.${id}.lock ]]; then
-        # lock this project for the next five minutes
-        touch /tmp/gti.${id}.lock
+      # remove lock files older then XX minutes
+      find /tmp/worker.lock -mmin +30 -exec rm {} \; > /dev/null 2>&1
+      if [[ "$pending" != "" ]] && [[ ! -f /tmp/worker.lock ]]; then
+        touch /tmp/worker.lock
         # return true and start the worker
         echo 1
         return

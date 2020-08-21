@@ -12,6 +12,7 @@ check_interval = 0
   [runners.docker]
     tls_verify = false
     image = "ruby:2.1"
+    pull_policy = "always"
     privileged = false
     disable_cache = false
     volumes = ["/cache", "/var/run/docker.sock:/var/run/docker.sock"]
